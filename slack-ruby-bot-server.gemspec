@@ -14,15 +14,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec)/}) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'async-websocket'
-  spec.add_dependency 'foreman'
-  spec.add_dependency 'grape'
-  spec.add_dependency 'grape-roar', '>= 0.4.0'
-  spec.add_dependency 'grape-swagger'
-  spec.add_dependency 'kaminari-grape'
-  spec.add_dependency 'rack-cors'
-  spec.add_dependency 'rack-rewrite'
-  spec.add_dependency 'rack-server-pages'
+  spec.add_dependency 'celluloid'
+  spec.add_dependency 'celluloid-io'
   spec.add_dependency 'slack-ruby-bot'
-  spec.add_dependency 'unicorn'
 end
