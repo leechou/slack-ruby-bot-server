@@ -147,7 +147,7 @@ module SlackRubyBotServer
     def logger
       @logger ||= begin
         STDOUT.sync = true
-        Logger.new(STDOUT)
+        ActiveSupport::Logger.new(STDOUT)
       end
     end
 

@@ -5,7 +5,7 @@ module SlackRubyBotServer
     attr_accessor :server_class
     attr_accessor :ping
     attr_accessor :database_adapter
-    attr_accessor :teams
+    attr_accessor :teams_table
 
     def reset!
       self.ping = nil
@@ -17,7 +17,7 @@ module SlackRubyBotServer
                               else
                                 raise 'One of "mongoid" or "activerecord" is required.'
                               end
-      self.teams = { name: 'slack_teams' } # the ActiveRecord table name
+      self.teams_table = "slack_teams"
     end
 
     def activerecord?
