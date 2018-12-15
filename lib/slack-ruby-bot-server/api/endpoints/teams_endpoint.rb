@@ -46,15 +46,20 @@ module SlackRubyBotServer
             )
 
             token = rc['bot']['bot_access_token']
-            team = SlackRubyBotServer::Team.where(token: token).first
+
+            secret_key = ENV['IDSEED']
+            iv = ENV['SLACK_TOKEN_IV'].unpack("m").first
+            encryp_token = [Encryptor.encrypt(token, algorithm: "aes-256-gcm", key:secret_key, iv:iv)].pack("m")            
+
+            team = SlackRubyBotServer::Team.where(token: encryp_token).first
             team ||= SlackRubyBotServer::Team.where(team_id: rc['team_id']).first
             if team && !team.active?
-              team.activate!(token)
+              team.activate!(encryp_token)
             elsif team
               raise "Team #{team.name} is already registered."
             else
               team = SlackRubyBotServer::Team.create!(
-                token: token,
+                token: encryp_token,
                 team_id: rc['team_id'],
                 name: rc['team_name']
               )

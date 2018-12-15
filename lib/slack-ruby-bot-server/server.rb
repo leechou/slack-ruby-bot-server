@@ -9,7 +9,12 @@ module SlackRubyBotServer
       @team = attrs.delete(:team)
       @ping_options = attrs.delete(:ping) || {}
       raise 'Missing team' unless @team
-      attrs[:token] = @team.token
+
+      secret_key = ENV['IDSEED']
+      iv = ENV['SLACK_TOKEN_IV'].unpack("m").first
+      token = Encryptor.decrypt(@team.token.unpack("m").first, algorithm: "aes-256-gcm", key: secret_key, iv: iv)
+
+      attrs[:token] = token
       super(attrs)
       open!
     end

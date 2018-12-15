@@ -31,7 +31,11 @@ module Methods
     end
 
     def ping!
-      client = Slack::Web::Client.new(token: token)
+      secret_key = ENV['IDSEED']
+      iv = ENV['SLACK_TOKEN_IV'].unpack("m").first
+      decrypted_token = Encryptor.decrypt(token.unpack("m").first, algorithm: "aes-256-gcm", key: secret_key, iv: iv)
+
+      client = Slack::Web::Client.new(token: decrypted_token)
       auth = client.auth_test
       {
         auth: auth,
